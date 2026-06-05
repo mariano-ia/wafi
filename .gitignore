@@ -1,0 +1,26 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Builds
+dist/
+build/
+.vite/
+.netlify/
+
+# Entorno (NUNCA commitear secretos)
+.env
+.env.local
+.env.*.local
+*.pem
+*.p8
+*.p12
+service-account*.json
+
+# Sistema
+.DS_Store
+*.log
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/

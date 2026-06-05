@@ -1,0 +1,15 @@
+{
+  "name": "wafi",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Wafi - Plataforma de fidelización digital",
+  "scripts": {
+    "dev:merchant": "pnpm --filter @wafi/merchant dev",
+    "dev:customer": "pnpm --filter @wafi/customer dev",
+    "build:merchant": "pnpm --filter @wafi/merchant build",
+    "build:customer": "pnpm --filter @wafi/customer build",
+    "dev:landing": "pnpm --filter @wafi/landing dev",
+    "build:landing": "pnpm --filter @wafi/landing build",
+    "dev": "pnpm -r --parallel dev"
+  }
+}

@@ -10,7 +10,7 @@
 - Backend: migraciones `wafi_0004` (qr_mode, require_presence, trial) y `wafi_0005` (freeze: `merchant_can_stamp` + gate en `register_scan`, trigger de trial, suscripción demo).
 - El equipo (workflow de 5 áreas) entregó: spec MVP-0, copy de landing, design system, kit de ventas y guía de Wallet.
 - Parcheo de billing en spec y landing del modelo viejo (tarjeta upfront) al final (sin tarjeta + freeze).
-- Lanzado el **equipo de Marketing** (plan + 6 piezas + QA de marca) — corriendo.
+- **Equipo de Marketing entregó:** plan de marketing + 6 piezas (Instagram, LinkedIn/X, emails, WhatsApp, contenido/SEO, ads) + QA de marca (7/7 OK; 1 nota menor aplicada en WhatsApp 3.1).
 
 **Aprendizajes:** los agentes del primer workflow heredaron el supuesto de billing viejo del briefing → conviene refrescar el contexto del workflow cuando cambia una decisión a mitad de camino. La verificación post-workflow (grep de "upfront") atrapó las inconsistencias.
 

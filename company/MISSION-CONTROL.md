@@ -25,7 +25,13 @@
 - **Tokens externos** (Mercado Pago en el día; resto en [SETUP-EXTERNAL](../docs/SETUP-EXTERNAL.md)).
 
 ## 📥 Inbox del CEO
-Decisiones grandes ya resueltas hoy (staging, escaneo, QR, presencia, trial/freeze, Apple). **Queda por definir** (negocio): número final de precio en ARS, límite exacto del Free, compra del dominio wafi.com.ar, y alcance de mensajería → [docs/CEO-PENDING-DECISIONS.md](../docs/CEO-PENDING-DECISIONS.md). Y **pasarme los datos de Mercado Pago**.
+Decisiones grandes ya resueltas (staging, escaneo, QR, presencia, trial/freeze, Apple).
+**Lo que necesito para construir las apps (mañana):**
+1. **Mercado Pago** — access token + public key + webhook secret.
+2. **Supabase service_role key** (proyecto `elpantano`).
+3. **GitHub** repo + acceso. 4. **Vercel** acceso. (Con esto buildeo en la nube — no hace falta Node local.)
+Luego: WhatsApp Cloud API, Turnstile, Resend. Detalle → [docs/SETUP-EXTERNAL.md](../docs/SETUP-EXTERNAL.md).
+**Decisiones de negocio que quedan:** precio final ARS, límite del Free, dominio wafi.com.ar, alcance de mensajería → [docs/CEO-PENDING-DECISIONS.md](../docs/CEO-PENDING-DECISIONS.md).
 
 ## 📊 Métricas
 Sin datos de uso (pre-lanzamiento).

@@ -2,8 +2,21 @@
 
 > Autoeditable y perpetua. Nunca borrar: superar o anotar. Hechos, convenciones y aprendizajes que toda la org debe conocer.
 
-## Estado actual (2026-06-04)
-Bootstrapping. Producto definido (PRD v2.0). Backend Supabase vivo (schema `wafi`). Sistema operativo de la compañía montado. Esperando tokens externos del CEO. Sin código de producto corriendo aún (no hay node local).
+## Estado actual (fin del 2026-06-05)
+Definición y materiales **completos**; falta construir las apps (bloqueado por tokens + entorno). Listo:
+- **Producto:** PRD v2.0 + spec MVP-0 ([docs/specs/MVP-0-SPECS.md](../../docs/specs/MVP-0-SPECS.md)).
+- **Backend Supabase vivo** (schema `wafi`, proyecto `elpantano`): 5 migraciones aplicadas — tablas, RLS, RPC anti-fraude (`wafi_register_scan` con cooldown 15min + tope + **presencia obligatoria hard** + geocerca), canje por token rotativo, **soft-paywall del día 31 (freeze/no-delete)** vía `merchant_can_stamp`, `qr_mode` (estático/dinámico), trial 30 días.
+- **Compañía:** OS completo + 8 departamentos con memoria.
+- **Entregables:** design system, kit de ventas, guía Wallet, y **marketing completo** (plan + 6 piezas + QA 7/7) en [docs/marketing/](../../docs/marketing/).
+- Todo **commiteado en git** (166+ archivos). Memoria persistente del harness actualizada.
+
+## Modelo de negocio (cerrado)
+Trial **30 días SIN tarjeta** → al **día 31 freeze** (el QR deja de dar sellos; sellos/vouchers se preservan; se reactiva al instante al pagar) → pago vía **Mercado Pago**. Precio no-brainer (~$14.900/mes, anual $11.900). Apple Wallet desbloqueado (CEO tiene cuenta). Ver ADR-0001..0012 en [../DECISIONS.md](../DECISIONS.md).
+
+## Próximos pasos (mañana) + tokens pendientes
+**Insight clave:** NO hace falta Node local — Edge Functions se deployan por el MCP de Supabase, y el front-end buildea en **Vercel** (nube). Con los tokens, se construye de verdad.
+**Tokens (prioridad):** (1) **Mercado Pago** access token + public key + webhook secret; (2) **Supabase service_role key**; (3) **GitHub** repo+acceso; (4) **Vercel** acceso; luego (5) WhatsApp Cloud API, (6) Turnstile, (7) Resend; MVP-1: (8) Apple cert, (9) Google Issuer. Detalle: [../../docs/SETUP-EXTERNAL.md](../../docs/SETUP-EXTERNAL.md).
+**Primera tarea con tokens:** Edge Functions reales (`wafi-stamp`, `mp-webhook`) + reconectar las apps de `old/` a `@wafi/shared/api` + auth comercio + OTP + cobro MP, y deploy.
 
 ## Hechos fijos
 - **Producto:** SaaS de fidelización con sellos digitales para **cafeterías de Argentina**. Reemplaza la tarjeta de cartón.

@@ -38,3 +38,28 @@
 **Contexto:** el canje es el punto de mayor valor/riesgo; balancear fraude vs fricción.
 **Decisión:** al completar la tarjeta el cliente recibe un **voucher de un solo uso**; lo canjea desde la web tocando "Canjear", que muestra un **código/QR rotativo válido 2-3 min**. Sin trabajo del cajero (solo lo verifica de vista). Vencimiento corto + single-use evitan reuso.
 **Estado:** ✅ Vigente · CEO · 2026-06-04
+
+### ADR-0008 — Modos de QR: estático imprimible (default) + dinámico rotativo (opcional)
+**Contexto:** balance entre simplicidad ("imprimí y pegá") y anti-fraude.
+**Decisión:** el QR **estático imprimible es el default**; el comercio puede activar en su panel un **QR dinámico rotativo** (opcional) para máximo blindaje. Backend: `wafi.stamp_cards.qr_mode ∈ {static, dynamic}`.
+**Estado:** ✅ Vigente · CEO · 2026-06-05
+
+### ADR-0009 — Presencia física obligatoria (hard), no opcional
+**Contexto:** el CEO exige que el cliente NO pueda sumar sellos desde casa.
+**Decisión:** la verificación de **presencia es obligatoria** (`require_presence=true` por default): sin geo dentro del radio del local, **no hay sello**. Supera la postura "geocerca soft/cosmética" del PRD §15. **Salvedad honesta:** con QR estático la geocerca GPS es spoofeable por un usuario técnico; lo único airtight es el **QR dinámico** (ADR-0008) o el **sello atado al pago MP** (roadmap). Para blindaje total, usar QR dinámico.
+**Estado:** ✅ Vigente · CEO · 2026-06-05
+
+### ADR-0010 — Free trial de 30 días, cobro automático al día 31
+**Contexto:** producto de hábito (café diario); generar dependencia antes de cobrar.
+**Decisión:** **trial de 30 días**; al día 31 se cobra la suscripción vía Mercado Pago. **Decisión final (CEO):** **sin tarjeta upfront** — valor primero, fricción mínima. La tarjeta se pide **al día 31** (al chocar el paywall). Apuesta: lock-in por sellos acumulados + precio no-brainer. Backend: `subscriptions.trial_days=30`, `trial_ends_at`.
+**Estado:** ✅ Vigente · CEO · 2026-06-05
+
+### ADR-0011 — Soft-paywall del día 31: congelar, no borrar
+**Contexto:** cómo bloquear el impago sin castigar al cliente final.
+**Decisión:** al día 31 sin pago el programa se **congela** (el QR deja de dar sellos nuevos → presión inmediata sobre el dueño), pero **los sellos y vouchers ganados se preservan** y los vouchers se pueden seguir canjeando; al pagar, **se restaura todo al instante**. Backend: `wafi.merchant_can_stamp()` + gate en `register_scan` (estado `subscription_inactive`). Customer Success es dueño de que el local enganche clientes reales durante el trial (sin eso, no hay palanca el día 31).
+**Estado:** ✅ Vigente · CEO · 2026-06-05
+
+### ADR-0012 — Apple Wallet desbloqueado
+**Contexto:** el CEO ya tiene cuenta/suscripción Apple Developer.
+**Decisión:** Apple Wallet va, no es bloqueante. Google Wallet sigue requiriendo solicitud de Issuer (arrancar ya por el lead time).
+**Estado:** ✅ Vigente · CEO · 2026-06-05

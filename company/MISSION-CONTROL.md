@@ -1,39 +1,34 @@
 # 🛰️ Mission Control — Wafi
 
-> La pantalla del CEO. Actualizada por la org cada ciclo. Última actualización: **2026-06-04, noche** (ciclo 0 · bootstrap).
+> La pantalla del CEO. Actualizada por la org cada ciclo. Última actualización: **2026-06-05, mañana** (ciclo 1).
 
 ## 🎯 North-star
 **Clientes activos recurrentes** (≥1 sello verificado en 30 días) — `0` (pre-lanzamiento).
 
 ## 🔄 Ciclo actual
-**Ciclo 0 — Bootstrap.** La compañía se montó sola y dejó el producto definido y el backend vivo. En pausa de construcción pesada hasta tener **Node local + tokens externos** (mañana).
+**Ciclo 1 — Definición y piezas.** Producto, backend y materiales avanzando en autónomo. Construcción de las apps en pausa hasta tener **Node local + tokens** (Mercado Pago en el día).
 
-## ✅ Hecho (esta noche, en autónomo)
-- Producto **definido**: PRD v2.0 verificado adversarialmente → [docs/PRODUCT-DEFINITION.md](../docs/PRODUCT-DEFINITION.md)
-- **Backend vivo** en Supabase (proyecto del blog de yacaré, schema `wafi` aislado): 11 tablas, RLS, y RPC anti-fraude (`register_scan` con cooldown 15min/tope/geocerca/presencia + canje por token rotativo). Probado con comercio demo `cafe-roma`.
-- **Compañía montada**: constitución, org, modelo operativo (loop infinito + cadencia), 8 departamentos con memoria autoeditable.
-- **Scaffold del producto** (`product/`): monorepo reusando `old/` + capa de datos `@wafi/shared` cableada a los RPC reales + stubs de Edge Functions (stamp/MP/wallet).
-- Setup externo documentado: [docs/SETUP-EXTERNAL.md](../docs/SETUP-EXTERNAL.md) + `.env.example`.
+## ✅ Hecho
+**Bootstrap (04/06):** producto definido (PRD v2.0), backend Supabase vivo (schema `wafi` aislado), compañía montada (8 áreas con memoria), scaffold del producto.
+**Hoy (05/06):**
+- **5 entregables del equipo:** [spec MVP-0](../docs/specs/MVP-0-SPECS.md), [copy de landing](../docs/marketing/LANDING-COPY.md), [design system](../docs/design/DESIGN-SYSTEM.md), [kit de ventas](../docs/sales/OUTBOUND-KIT.md), [guía Wallet](../docs/WALLET-SETUP.md).
+- **Backend evolucionado:** modos de QR (`qr_mode`), **presencia obligatoria hard**, y **soft-paywall del día 31 (freeze, no delete)** ya implementado (`merchant_can_stamp` + gate en `register_scan`).
+- **Modelo de negocio cerrado:** trial 30 días **sin tarjeta** → freeze día 31 → pago. Apple Wallet desbloqueado. Decisiones [ADR-0008..0012](DECISIONS.md). Spec y landing **parcheados** a este modelo.
 
-## 🚧 En curso / ⏭️ Próximo (cuando haya Node + tokens)
-1. Reconectar las apps de `old/` a `@wafi/shared/api` (hoy usan mock).
-2. Auth del comercio + WhatsApp OTP + cobro Mercado Pago.
-3. Edge Function `wafi-stamp` (rate-limit + Turnstile + presencia dura).
-4. Beta cerrada con 5-10 cafeterías.
-→ Detalle en [MILESTONES.md](MILESTONES.md).
+## 🚧 En curso / ⏭️ Próximo
+- 🟡 **Equipo de Marketing produciendo** (corriendo ahora): plan de marketing + 6 piezas (Instagram, LinkedIn/X, emails, WhatsApp, contenido/SEO, ads) + QA de marca.
+- ⏭️ Construir las apps (reconectar a Supabase, auth comercio, OTP, cobro MP) cuando haya **Node + tokens**.
+→ [MILESTONES.md](MILESTONES.md).
 
 ## 🚩 Bloqueos
-- **Sin Node/pnpm local** → no puedo correr/buildear las apps. (Pedido en SETUP-EXTERNAL §0.)
-- **Sin tokens externos** (Supabase service role, Mercado Pago, WhatsApp, etc.) → billing/OTP/deploy esperan.
+- **Sin Node/pnpm local** → no puedo correr/buildear las apps.
+- **Tokens externos** (Mercado Pago en el día; resto en [SETUP-EXTERNAL](../docs/SETUP-EXTERNAL.md)).
 
-## 📥 Inbox del CEO (decisiones que te esperan)
-1. **Staging del MVP:** el equipo recomienda **MVP-0 = PWA como la tarjeta, wallets nativos a MVP-1** (los wallets son la integración más lenta/riesgosa y nada crítico los requiere). ¿Lo aprobás? *(toca tu decisión ADR-0001).*
-2. **5 decisiones de producto/negocio** (pricing en ARS, límite del Free, trial con/sin tarjeta, dominio wafi.com.ar, alcance de mensajería) → [docs/CEO-PENDING-DECISIONS.md](../docs/CEO-PENDING-DECISIONS.md).
-3. **Tokens externos** para destrabar billing/OTP/deploy → [docs/SETUP-EXTERNAL.md](../docs/SETUP-EXTERNAL.md).
-4. **Nota:** el proyecto Supabase del blog de yacaré tiene **RLS desactivado en 4 tablas del blog** (tema de seguridad de yacaré, no de Wafi). Te lo señalo por si querés que lo arreglemos.
+## 📥 Inbox del CEO
+Decisiones grandes ya resueltas hoy (staging, escaneo, QR, presencia, trial/freeze, Apple). **Queda por definir** (negocio): número final de precio en ARS, límite exacto del Free, compra del dominio wafi.com.ar, y alcance de mensajería → [docs/CEO-PENDING-DECISIONS.md](../docs/CEO-PENDING-DECISIONS.md). Y **pasarme los datos de Mercado Pago**.
 
 ## 📊 Métricas
-Sin datos de uso todavía (pre-lanzamiento). Datos & Analytics arranca tracking apenas haya escaneos reales.
+Sin datos de uso (pre-lanzamiento).
 
 ## 🏢 Estado por área
-Producto ✅ definió el MVP · Ingeniería 🟡 backend listo, apps pendientes · Diseño ⬜ · Marketing ⬜ · Ventas ⬜ · Finanzas 🟡 pricing a definir (CEO) · Customer Success ⬜ · Datos ⬜ — todas instanciadas, esperando arrancar su primer ciclo.
+Producto ✅ spec MVP-0 · Ingeniería 🟡 backend avanzado, apps pendientes (Node) · Diseño ✅ design system · Marketing 🟡 plan + piezas en producción · Ventas ✅ kit outbound · Finanzas 🟡 modelo cerrado, precio final a confirmar · Customer Success ⬜ (dueño del enganche en el trial) · Datos ⬜ (arranca con escaneos reales).

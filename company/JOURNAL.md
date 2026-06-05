@@ -2,6 +2,20 @@
 
 > Append-only. Qué pasó cada ciclo. Lo más nuevo arriba.
 
+## 2026-06-05 · Ciclo 1 — Definición fina y piezas
+
+**Decisiones del CEO (resueltas e implementadas):** QR estático default + dinámico opcional (ADR-0008); **presencia obligatoria hard** (ADR-0009); **trial 30 días sin tarjeta + soft-paywall día 31 con freeze-no-delete** (ADR-0010 final + ADR-0011); Apple Wallet desbloqueado (ADR-0012).
+
+**Hecho:**
+- Backend: migraciones `wafi_0004` (qr_mode, require_presence, trial) y `wafi_0005` (freeze: `merchant_can_stamp` + gate en `register_scan`, trigger de trial, suscripción demo).
+- El equipo (workflow de 5 áreas) entregó: spec MVP-0, copy de landing, design system, kit de ventas y guía de Wallet.
+- Parcheo de billing en spec y landing del modelo viejo (tarjeta upfront) al final (sin tarjeta + freeze).
+- Lanzado el **equipo de Marketing** (plan + 6 piezas + QA de marca) — corriendo.
+
+**Aprendizajes:** los agentes del primer workflow heredaron el supuesto de billing viejo del briefing → conviene refrescar el contexto del workflow cuando cambia una decisión a mitad de camino. La verificación post-workflow (grep de "upfront") atrapó las inconsistencias.
+
+**Próximo:** recoger las piezas de marketing; construir las apps cuando haya Node + tokens de Mercado Pago.
+
 ## 2026-06-04 · Ciclo 0 — Bootstrap (sesión nocturna, autónoma)
 
 **Contexto:** primera sesión. El CEO definió la visión (fidelización con sellos digitales para gastronómicos AR, Mercado Pago, compañía operada por IA), aprobó el equipo y la cadencia, y delegó avanzar en autónomo durante la noche.

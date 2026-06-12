@@ -14,7 +14,7 @@
 
 ## Fase 1 — MVP-0 (PWA como la tarjeta, sin wallets nativos) · ~6-8 semanas
 - ⬜ Auth del comercio (Supabase Auth) + recuperación + "Primeros pasos" (wizard)
-- ⬜ Identidad del cliente por **WhatsApp OTP** (fallback SMS) + consentimiento (Ley 25.326)
+- ⬜ Identidad del cliente por **SMS OTP** (Supabase Auth + Twilio Verify; WhatsApp futuro) + consentimiento (Ley 25.326)
 - ⬜ Edge Function de sello server-side con capas 1+2+3+5 (**presencia dura**) + rate-limit
 - ⛔ Flujo cámara-nativa real `/s/{merchant}` (depende de dominio + deploy)
 - ⬜ PWA cliente: tarjeta, progreso, voucher + timer 5min + **canje por re-escaneo** (ADR-0007)

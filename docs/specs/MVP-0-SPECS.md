@@ -70,15 +70,15 @@ Que el dueno de la cafeteria pueda crear su cuenta, entrar, recuperarla, y queda
 
 ---
 
-## Feature 2 — Identidad del cliente por WhatsApp OTP + consentimiento (Ley 25.326)
+## Feature 2 — Identidad del cliente por SMS OTP (Supabase Auth + Twilio Verify) + consentimiento (Ley 25.326)
 
 ### 2.1 Objetivo
-Crear/identificar al cliente con la **minima friccion** (solo telefono verificado) y dejar registrado el **consentimiento informado** de datos personales, con WhatsApp OTP como primera capa anti-fraude.
+Crear/identificar al cliente con la **minima friccion** (solo telefono verificado) y dejar registrado el **consentimiento informado** de datos personales, con **OTP por SMS** (telefono verificado) como primera capa anti-fraude. Login via **Supabase Auth (phone) + Twilio Verify**, canal **SMS** ahora y **WhatsApp** como swap de canal futuro sin tocar codigo (ADR-0013).
 
 ### 2.2 Flujo
 1. Disparado desde el primer sello (Feature 3) cuando el cliente no tiene cuenta: pantalla **"Para guardar tu sello, ingresá tu número."** (COPY PUBLICA).
 2. **Consentimiento (en la MISMA pantalla):** checkbox/aviso con links a **Política de Privacidad** y **Términos**. Texto claro de que el comercio es responsable y Wafi encargado del tratamiento; derecho de acceso, rectificacion y **supresion/baja de cuenta**. Sin aceptar, no se envia OTP.
-3. **Envio OTP:** se manda **OTP de 6 dígitos por WhatsApp REAL** (Cloud API / BSP). **Fallback SMS solo si el numero no tiene WhatsApp.**
+3. **Envio OTP:** Supabase Auth dispara un **OTP de 6 dígitos por SMS** via **Twilio Verify** (Twilio gestiona generacion, entrega, reintentos y fraude). El canal se configura en el Verify Service: hoy SMS; se agrega WhatsApp cuando la cuenta de Meta este aprobada, sin tocar codigo.
 4. **Verificacion:** el cliente ingresa los 6 digitos. OK -> se crea/recupera `wafi.customer` (solo telefono) y se persiste `wafi.consent`.
 5. **Sello pendiente:** el sello que disparo el alta no se pierde; se acredita al cerrar el alta (manejo de "sello pendiente").
 6. Nombre, email y cumple quedan **opcionales para despues** (no bloquean).
@@ -89,7 +89,7 @@ Crear/identificar al cliente con la **minima friccion** (solo telefono verificad
 - **Limite de reenvios** por telefono (anti toll-fraud de SMS).
 - **Rate-limit de creacion de cuentas por IP/ASN**; bloqueo de rangos ASN de datacenter/VPN en el alta.
 - **Turnstile invisible** en el endpoint de alta.
-- Forzar WhatsApp real (SMS solo si no hay WhatsApp) para filtrar virtuales.
+- Telefono real verificado por SMS encarece las granjas de cuentas; **Twilio Verify Fraud Guard** + bloqueo de ASN datacenter/VPN filtran virtuales y toll-fraud.
 
 ### 2.4 Datos (`wafi.*`)
 - `wafi.customer`: `id, nombre(null), email(null), birthday(null), auth_id, phone(verificado), created_at`. Global a Wafi. `UNIQUE(phone)`.
@@ -98,7 +98,7 @@ Crear/identificar al cliente con la **minima friccion** (solo telefono verificad
 
 ### 2.5 Criterios de aceptacion (checklist)
 - [ ] No se envia OTP sin aceptar el consentimiento; los links a Privacidad y Términos abren y funcionan.
-- [ ] El OTP llega por **WhatsApp** cuando el numero tiene WhatsApp; cae a SMS solo si no lo tiene.
+- [ ] El OTP llega por **SMS** (Twilio Verify via Supabase Auth) en segundos; el canal es configurable (SMS hoy, WhatsApp futuro).
 - [ ] El codigo es de **6 dígitos** y expira entre 5 y 10 min.
 - [ ] Tras 5 intentos fallidos por telefono o IP, hay **lockout temporal**; los reenvios estan limitados.
 - [ ] Alta desde IP/ASN de datacenter/VPN es bloqueada o desafiada por Turnstile.
@@ -120,7 +120,7 @@ Que el cliente sume **1 sello por visita** escaneando el QR del local con la **c
 
 ### 3.2 Flujo
 1. **Descubrir:** el cliente apunta la **camara nativa** al QR pegado al lado de la caja -> abre `https://app.wafi.com.ar/s/{slug}`. (La PWA **no** usa `getUserMedia`; el escaneo lo hace el SO.)
-2. **Alta liviana** si no tiene cuenta -> Feature 2 (WhatsApp OTP + consentimiento), con manejo de "sello pendiente".
+2. **Alta liviana** si no tiene cuenta -> Feature 2 (SMS OTP + consentimiento), con manejo de "sello pendiente".
 3. **Permiso de ubicacion (una sola vez):** en el primer sello de la sesion / primer sello de un device nuevo en ese local se pide geolocalizacion **una vez**, con copy claro (COPY PUBLICA): **"Para confirmar que estás en el local, necesitamos tu ubicación una vez."** Se **cachea** la geo (al instalar la PWA / primer escaneo) para no re-promptear en cada visita.
 4. **Llamada al server:** la PWA llama **RPC `wafi_register_scan`** con: `slug`, `token` (de la URL del QR), `device_id` (FingerprintJS, tratado como senal), geo declarada (si hay), `request_id`.
 5. **Decision server-side** (orden de validacion):

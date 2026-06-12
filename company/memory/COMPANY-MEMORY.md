@@ -15,7 +15,7 @@ Trial **30 días SIN tarjeta** → al **día 31 freeze** (el QR deja de dar sell
 
 ## Próximos pasos (mañana) + tokens pendientes
 **Insight clave:** NO hace falta Node local — Edge Functions se deployan por el MCP de Supabase, y el front-end buildea en **Vercel** (nube). Con los tokens, se construye de verdad.
-**Tokens (prioridad):** (1) **Mercado Pago** access token + public key + webhook secret; (2) **Supabase service_role key**; (3) **GitHub** repo+acceso; (4) **Vercel** acceso; luego (5) WhatsApp Cloud API, (6) Turnstile, (7) Resend; MVP-1: (8) Apple cert, (9) Google Issuer. Detalle: [../../docs/SETUP-EXTERNAL.md](../../docs/SETUP-EXTERNAL.md).
+**Tokens:** ✅ Supabase service_role (en `product/.env`) · ✅ GitHub (`mariano-ia/wafi`). Faltan: (1) **Mercado Pago** (access token + public key + webhook secret); (2) **Twilio** (Account SID + Auth Token + Verify Service SID → login del cliente por SMS OTP, ADR-0013); (3) **Vercel**; luego Turnstile, Resend; MVP-1: Apple cert, Google Issuer. **Login del cliente = SMS OTP (Supabase Auth + Twilio Verify), WhatsApp futuro.** Detalle: [../../docs/SETUP-EXTERNAL.md](../../docs/SETUP-EXTERNAL.md).
 **Primera tarea con tokens:** Edge Functions reales (`wafi-stamp`, `mp-webhook`) + reconectar las apps de `old/` a `@wafi/shared/api` + auth comercio + OTP + cobro MP, y deploy.
 
 ## Hechos fijos

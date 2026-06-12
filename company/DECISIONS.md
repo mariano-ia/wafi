@@ -63,3 +63,8 @@
 **Contexto:** el CEO ya tiene cuenta/suscripción Apple Developer.
 **Decisión:** Apple Wallet va, no es bloqueante. Google Wallet sigue requiriendo solicitud de Issuer (arrancar ya por el lead time).
 **Estado:** ✅ Vigente · CEO · 2026-06-05
+
+### ADR-0013 — Login del cliente = SMS OTP (Supabase Auth + Twilio Verify); WhatsApp como swap futuro
+**Contexto:** WhatsApp Cloud API tiene setup complejo con Meta (verificación lenta, riesgo de no aprobación). El login necesita fricción mínima + una capa de identidad anti-fraude.
+**Decisión:** identidad del cliente por **OTP por teléfono vía Supabase Auth + Twilio Verify**, canal **SMS** ahora. El OTP es una sola interacción (confirmar la cuenta). **WhatsApp** se agrega después como canal del mismo Verify Service, **sin cambiar código**. Supera el "WhatsApp OTP" del MVP-0. El anti-fraude principal sigue siendo la **presencia obligatoria** (ADR-0009); el teléfono real + Twilio Fraud Guard encarecen las granjas. Tokens: `TWILIO_ACCOUNT_SID` / `TWILIO_AUTH_TOKEN` / `TWILIO_VERIFY_SERVICE_SID`.
+**Estado:** ✅ Vigente · CEO · 2026-06-12

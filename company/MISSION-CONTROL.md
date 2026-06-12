@@ -26,11 +26,11 @@
 
 ## 📥 Inbox del CEO
 Decisiones grandes ya resueltas (staging, escaneo, QR, presencia, trial/freeze, Apple).
-**Lo que necesito para construir las apps (mañana):**
+**Para construir las apps:** ✅ Supabase service_role · ✅ GitHub (`mariano-ia/wafi`). **Faltan:**
 1. **Mercado Pago** — access token + public key + webhook secret.
-2. **Supabase service_role key** (proyecto `elpantano`).
-3. **GitHub** repo + acceso. 4. **Vercel** acceso. (Con esto buildeo en la nube — no hace falta Node local.)
-Luego: WhatsApp Cloud API, Turnstile, Resend. Detalle → [docs/SETUP-EXTERNAL.md](../docs/SETUP-EXTERNAL.md).
+2. **Twilio** — Account SID + Auth Token + **Verify Service SID** (login del cliente por SMS OTP — ADR-0013).
+3. **Vercel** — acceso para deploy (buildea en la nube; no hace falta Node local).
+Luego: Turnstile, Resend. Detalle → [docs/SETUP-EXTERNAL.md](../docs/SETUP-EXTERNAL.md).
 **Decisiones de negocio que quedan:** precio final ARS, límite del Free, dominio wafi.com.ar, alcance de mensajería → [docs/CEO-PENDING-DECISIONS.md](../docs/CEO-PENDING-DECISIONS.md).
 
 ## 📊 Métricas

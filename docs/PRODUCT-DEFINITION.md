@@ -144,7 +144,7 @@ FIU (#1: wallet-pass AR sin registro; la diferencia de fondo es el modelo de esc
 - **Se REESCRIBE (no "reusa"):** **ScanModal** — es una camara falsa con **cooldown de 1 hora hardcodeado** ("Tiene que pasar 1 hora...", verificado en `ScanModal.jsx`) y **merchant "Cafe Roma" hardcodeado**. Casi nada se reusa salvo la animacion de success. Pasa a ser pantalla de RESULTADO del flujo camara-nativa. El "QR personal" de Profile como mecanismo de sello se descarta.
 
 ### 6.4 Identidad
-- **Alta = solo telefono + WhatsApp OTP.** El telefono verificado es identidad y primera capa anti-fraude. Email opcional.
+- **Alta = solo telefono + SMS OTP** (Supabase Auth + Twilio Verify; WhatsApp futuro — ADR-0013). El telefono verificado es identidad y primera capa anti-fraude. Email opcional.
 - **Migracion por cambio de numero (NUEVO, hueco de retencion serio en AR):** como identidad = telefono, cambiar de SIM = perder sellos. MVP: soporte manual de migracion via WhatsApp (el dueno o Wafi vinculan el numero viejo al nuevo). v2: flujo self-service.
 
 ---
@@ -327,7 +327,7 @@ Unificar LAUNCH-PLAYBOOK y LANDING-CRO: mismo limite Free (150 activos, definici
 - **Frontend (reusar prototipo):** monorepo pnpm, React 18 + Vite 5 + Tailwind 3. Apps: `merchant` (panel), `customer` (PWA instalable), `landing`.
 - **Backend:** **Supabase** — Postgres + Auth + **Edge Functions** + **Row Level Security** (aislar datos por comercio). **Realtime = roadmap; en MVP polling 10-15s.**
 - **Autoridad del sello:** una Edge Function otorga SIEMPRE el sello tras validar TODAS las capas (cooldown por cuenta/device/IP, presencia dura, token, anomalias). **Rate-limit y proteccion DoS del endpoint** (RLS no cubre esto).
-- **Identidad:** WhatsApp OTP via Cloud API / BSP (Meta Cloud API directa o 360dialog/Twilio), **forzando WhatsApp real**; fallback SMS solo si el numero no tiene WhatsApp; 6 digitos + rate-limit + limite de reenvios.
+- **Identidad:** **SMS OTP via Supabase Auth + Twilio Verify** (canal SMS ahora, WhatsApp como swap futuro del mismo Verify Service — **ADR-0013**); 6 digitos + rate-limit + limite de reenvios + Twilio Fraud Guard.
 - **Pagos:** Mercado Pago `/preapproval` (suscripcion) con **tokenizacion de tarjeta via SDK/Bricks** + webhooks con `x-signature` + GET canonico (seccion 10.3). Roadmap: Orders API + webhook `payment.approved` para sello-atado-al-pago.
 - **Anti-fraude:** FingerprintJS open source **tratado como senal, no atestacion**; cruce server-side con IP/ASN/geo-IP/horario; Turnstile invisible en alta y primer escaneo; token HMAC con vida de varios minutos.
 - **Wallet passes (cuando entren — MVP-1):** `.pkpass` (Apple, requiere cert Pass Type ID + web service de updates) y Google Wallet objects (Issuer account + JWT firmado + push). El mismo pass muta a "recompensa lista".

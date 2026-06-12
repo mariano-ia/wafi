@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Coffee, Check, Clock, MapPin, Gift, Loader2, AlertCircle, PartyPopper } from 'lucide-react'
-import { api, auth } from '@wafi/shared'
+import { api, auth } from '../lib'
 
 // Landing de escaneo. El QR estático del local apunta acá: /s/{slug}
 // Flujo: cargar branding -> login (email OTP interino) -> pedir ubicación -> sumar sello (RPC real).

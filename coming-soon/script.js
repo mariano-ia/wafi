@@ -10,11 +10,14 @@
   const body   = document.body;
 
   /* ------------------------------- Reveal -------------------------------- */
-  const reveal = () => requestAnimationFrame(() => body.classList.add('loaded'));
-  if (document.readyState === 'complete') reveal();
-  else window.addEventListener('load', reveal);
-  // failsafe: nunca quedarse en blanco si 'load' tarda
-  setTimeout(() => body.classList.add('loaded'), 1200);
+  // Disparamos apenas el DOM está listo (el script tiene defer): NO esperamos a
+  // que carguen las fonts/imágenes, así el contenido nunca queda invisible.
+  const reveal = () =>
+    requestAnimationFrame(() => requestAnimationFrame(() => body.classList.add('loaded')));
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', reveal);
+  else reveal();
+  // failsafe corto por las dudas
+  setTimeout(() => body.classList.add('loaded'), 500);
 
   /* ------------------------- Stamp card: llenado ------------------------- */
   const STAMP_COUNT = 8;
@@ -123,11 +126,12 @@
     const dot  = document.querySelector('.cursor-dot');
     const ring = document.querySelector('.cursor-ring');
     if (dot && ring) {
-      body.classList.add('has-cursor', 'fine');
+      body.classList.add('fine');
       let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-      let rx = mx, ry = my, raf = null;
+      let rx = mx, ry = my, raf = null, shown = false;
 
       window.addEventListener('mousemove', (e) => {
+        if (!shown) { body.classList.add('has-cursor'); shown = true; } // evita cursor en (0,0)
         mx = e.clientX; my = e.clientY;
         dot.style.transform = `translate(${mx - 3.5}px, ${my - 3.5}px)`;
         if (!raf) raf = requestAnimationFrame(ringTick);

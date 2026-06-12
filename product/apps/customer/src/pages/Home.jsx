@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Gift, Coffee, Loader2 } from 'lucide-react'
-import { api, auth } from '@wafi/shared'
+import { api, auth } from '../lib'
 
 function initials(name) {
   return (name || '?').split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase()

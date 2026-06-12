@@ -5,10 +5,12 @@ import CardView from './pages/CardView'
 import Vouchers from './pages/Vouchers'
 import Profile from './pages/Profile'
 import Notifications from './pages/Notifications'
+import Scan from './pages/Scan'
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/s/:slug" element={<Scan />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="card/:id" element={<CardView />} />
